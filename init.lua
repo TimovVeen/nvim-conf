@@ -230,66 +230,17 @@ require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
 
-  -- NOTE: Plugins can also be added by using a table,
-  -- with the first argument being the link and the following
-  -- keys can be used to configure plugin behavior/loading/etc.
-  --
-  -- Use `opts = {}` to force a plugin to be loaded.
-  --
-  --  This is equivalent to:
-  --    require('Comment').setup({})
-
-  -- {
-  --   'nvim-neorg/neorg',
-  --   lazy = false,
-  --   version = '*',
-  --   config = function()
-  --     require('neorg').setup {
-  --       load = {
-  --         ['core.defaults'] = {},
-  --         ['core.concealer'] = {},
-  --         ['core.dirman'] = {
-  --           config = {
-  --             workspaces = {
-  --               notes = '~/notes',
-  --             },
-  --             index = 'index.norg',
-  --             default_workspace = 'notes',
-  --           },
-  --         },
-  --       },
-  --     }
-  --   end,
-  -- },
-
-  -- "gc" to comment visual regions/lines
-  { 'numToStr/Comment.nvim',    opts = {} },
-
-  -- Here is a more advanced example where we pass configuration
-  -- options to `gitsigns.nvim`. This is equivalent to the following Lua:
-  --    require('gitsigns').setup({ ... })
-  --
-  -- See `:help gitsigns` to understand what the configuration keys do
-  { -- Adds git related signs to the gutter, as well as utilities for managing changes
-    'lewis6991/gitsigns.nvim',
-    opts = {
-      signs = {
-        add = { text = '+' },
-        change = { text = '~' },
-        delete = { text = '_' },
-        topdelete = { text = '‾' },
-        changedelete = { text = '~' },
-      },
-    },
-  },
-
   {
     "mikavilpas/yazi.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+    },
+    -- lazy = false,
     event = "VeryLazy",
     keys = {
       -- 👇 in this section, choose your own keymappings!
       {
-        "<leader>-",
+        "<leader>e",
         function()
           require("yazi").yazi()
         end,
@@ -321,12 +272,65 @@ require('lazy').setup({
       -- use_ya_for_events_reading = true,
       -- use_yazi_client_id_flag = true,
 
-      keymaps = {
-        show_help = '<f1>',
-      },
+      -- keymaps = {
+      --   show_help = '<f1>',
+      -- },
     },
   },
 
+
+  -- NOTE: Plugins can also be added by using a table,
+  -- with the first argument being the link and the following
+  -- keys can be used to configure plugin behavior/loading/etc.
+  --
+  -- Use `opts = {}` to force a plugin to be loaded.
+  --
+  --  This is equivalent to:
+  --    require('Comment').setup({})
+
+  {
+    'nvim-neorg/neorg',
+    lazy = false,
+    version = '*',
+    config = function()
+      require('neorg').setup {
+        load = {
+          ['core.defaults'] = {},
+          ['core.concealer'] = {},
+          ['core.dirman'] = {
+            config = {
+              workspaces = {
+                notes = '~/notes',
+              },
+              index = 'index.norg',
+              default_workspace = 'notes',
+            },
+          },
+        },
+      }
+    end,
+  },
+
+  -- "gc" to comment visual regions/lines
+  { 'numToStr/Comment.nvim',    opts = {} },
+
+  -- Here is a more advanced example where we pass configuration
+  -- options to `gitsigns.nvim`. This is equivalent to the following Lua:
+  --    require('gitsigns').setup({ ... })
+  --
+  -- See `:help gitsigns` to understand what the configuration keys do
+  { -- Adds git related signs to the gutter, as well as utilities for managing changes
+    'lewis6991/gitsigns.nvim',
+    opts = {
+      signs = {
+        add = { text = '+' },
+        change = { text = '~' },
+        delete = { text = '_' },
+        topdelete = { text = '‾' },
+        changedelete = { text = '~' },
+      },
+    },
+  },
 
   -- NOTE: Plugins can also be configured to run Lua code when they are loaded.
   --
