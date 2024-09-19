@@ -8,35 +8,6 @@
     - :help lua-guide
     - (or HTML version): https://neovim.io/doc/user/lua-guide.html
 
-Kickstart Guide:
-
-  TODO: The very first thing you should do is to run the command `:Tutor` in Neovim.
-
-    If you don't know what this means, type the following:
-      - <escape key>
-      - :
-      - Tutor
-      - <enter key>
-
-    (If you already know the Neovim basics, you can skip this step.)
-
-  Once you've completed that, you can continue working through **AND READING** the rest
-  of the kickstart init.lua.
-
-  Next, run AND READ `:help`.
-    This will open up a help window with some basic information
-    about reading, navigating and searching the builtin help documentation.
-
-    This should be the first place you go to look when you're stuck or confused
-    with something. It's one of my favorite Neovim features.
-
-    MOST IMPORTANTLY, we provide a keymap "<space>sh" to [s]earch the [h]elp documentation,
-    which is very useful when you're not exactly sure of what you're looking for.
-
-  I have left several `:help X` comments throughout the init.lua
-    These are hints about where to find more information about the relevant settings,
-    plugins or Neovim features used in Kickstart.
-
 -- Set <space> as the leader key
 -- See `:help mapleader`
 --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
@@ -173,68 +144,9 @@ end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
 -- [[ Configure and install plugins ]]
---
---  To check the current status of your plugins, run
---    :Lazy
---
---  You can press `?` in this menu for help. Use `:q` to close the window
---
---  To update plugins you can run
---    :Lazy update
---
--- NOTE: Here is where you install your plugins.
 require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
-
-  -- {
-  --   "mikavilpas/yazi.nvim",
-  --   dependencies = {
-  --     "nvim-lua/plenary.nvim",
-  --   },
-  --   -- lazy = false,
-  --   event = "VeryLazy",
-  --   keys = {
-  --     -- 👇 in this section, choose your own keymappings!
-  --     {
-  --       "<leader>e",
-  --       function()
-  --         require("yazi").yazi()
-  --       end,
-  --       desc = "Open the file manager",
-  --     },
-  --     {
-  --       -- Open in the current working directory
-  --       "<leader>cw",
-  --       function()
-  --         require("yazi").yazi(nil, vim.fn.getcwd())
-  --       end,
-  --       desc = "Open the file manager in nvim's working directory",
-  --     },
-  --     {
-  --       '<c-up>',
-  --       function()
-  --         -- NOTE: requires a version of yazi that includes
-  --         -- https://github.com/sxyazi/yazi/pull/1305 from 2024-07-18
-  --         require('yazi').toggle()
-  --       end,
-  --       desc = "Resume the last yazi session",
-  --     },
-  --   },
-  --   opts = {
-  --     -- if you want to open yazi instead of netrw, see below for more info
-  --     open_for_directories = true,
-  --
-  --     -- enable these if you are using the latest version of yazi
-  --     -- use_ya_for_events_reading = true,
-  --     -- use_yazi_client_id_flag = true,
-  --
-  --     -- keymaps = {
-  --     --   show_help = '<f1>',
-  --     -- },
-  --   },
-  -- },
-  --
 
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
@@ -245,48 +157,6 @@ require('lazy').setup({
   --  This is equivalent to:
   --    require('Comment').setup({})
 
-  -- {
-  --   '3rd/image.nvim',
-  --   rocks = {
-  --     "magick",
-  --   },
-  --   config = function()
-  --     require("image").setup({
-  --       backend = "kitty",
-  --       integrations = {
-  --         markdown = {
-  --           enabled = true,
-  --           clear_in_insert_mode = false,
-  --           download_remote_images = true,
-  --           only_render_image_at_cursor = false,
-  --           filetypes = { "markdown", "vimwiki" }, -- markdown extensions (ie. quarto) can go here
-  --         },
-  --         neorg = {
-  --           enabled = true,
-  --           clear_in_insert_mode = false,
-  --           download_remote_images = true,
-  --           only_render_image_at_cursor = false,
-  --           filetypes = { "norg" },
-  --         },
-  --         html = {
-  --           enabled = false,
-  --         },
-  --         css = {
-  --           enabled = false,
-  --         },
-  --       },
-  --       max_width = nil,
-  --       max_height = nil,
-  --       max_width_window_percentage = nil,
-  --       max_height_window_percentage = 50,
-  --       window_overlap_clear_enabled = false,                                               -- toggles images when windows are overlapped
-  --       window_overlap_clear_ft_ignore = { "cmp_menu", "cmp_docs", "" },
-  --       editor_only_render_when_focused = false,                                            -- auto show/hide images when the editor gains/looses focus
-  --       tmux_show_only_in_active_window = false,                                            -- auto show/hide images in the correct Tmux window (needs visual-activity off)
-  --       hijack_file_patterns = { "*.png", "*.jpg", "*.jpeg", "*.gif", "*.webp", "*.avif" }, -- render image files as images when opened
-  --     })
-  --   end,
-  -- },
   {
     'martineausimon/nvim-lilypond-suite',
     config = function()
@@ -529,43 +399,9 @@ require('lazy').setup({
       { 'Bilal2453/luvit-meta', lazy = true },
     },
     config = function()
-      -- Brief aside: **What is LSP?**
-      --
-      -- LSP is an initialism you've probably heard, but might not understand what it is.
-      --
-      -- LSP stands for Language Server Protocol. It's a protocol that helps editors
-      -- and language tooling communicate in a standardized fashion.
-      --
-      -- In general, you have a "server" which is some tool built to understand a particular
-      -- language (such as `gopls`, `lua_ls`, `rust_analyzer`, etc.). These Language Servers
-      -- (sometimes called LSP servers, but that's kind of like ATM Machine) are standalone
-      -- processes that communicate with some "client" - in this case, Neovim!
-      --
-      -- LSP provides Neovim with features like:
-      --  - Go to definition
-      --  - Find references
-      --  - Autocompletion
-      --  - Symbol Search
-      --  - and more!
-      --
-      -- Thus, Language Servers are external tools that must be installed separately from
-      -- Neovim. This is where `mason` and related plugins come into play.
-      --
-      -- If you're wondering about lsp vs treesitter, you can check out the wonderfully
-      -- and elegantly composed help section, `:help lsp-vs-treesitter`
-
-      --  This function gets run when an LSP attaches to a particular buffer.
-      --    That is to say, every time a new file is opened that is associated with
-      --    an lsp (for example, opening `main.rs` is associated with `rust_analyzer`) this
-      --    function will be executed to configure the current buffer
       vim.api.nvim_create_autocmd('LspAttach', {
         group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
         callback = function(event)
-          -- NOTE: Remember that Lua is a real programming language, and as such it is possible
-          -- to define small helper and utility functions so you don't have to repeat yourself.
-          --
-          -- In this case, we create a function that lets us more easily define mappings specific
-          -- for LSP related items. It sets the mode, buffer and description for us each time.
           local map = function(keys, func, desc)
             vim.keymap.set('n', keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
           end
@@ -657,8 +493,9 @@ require('lazy').setup({
 
       local lspconfig = require 'lspconfig'
 
-      lspconfig.clangd.setup {}
+      lspconfig.clangd.setup { capabilities = capabilities }
       lspconfig.pylsp.setup {
+        capabilities = capabilities,
         settings = {
           pylsp = {
             plugins = {
@@ -682,9 +519,7 @@ require('lazy').setup({
       }
 
       lspconfig.lua_ls.setup {
-        -- cmd = {...},
-        -- filetypes = { ...},
-        -- capabilities = {},
+        capabilities = capabilities,
         settings = {
           Lua = {
             completion = {
@@ -696,30 +531,7 @@ require('lazy').setup({
         },
       }
 
-      lspconfig.julials.setup {}
-      -- Enable the following language servers
-      --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
-      --
-      --  Add any additional override configuration in the following tables. Available keys are:
-      --  - cmd (table): Override the default command used to start the server
-      --  - filetypes (table): Override the default list of associated filetypes for the server
-      --  - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
-      --  - settings (table): Override the default settings passed when initializing the server.
-      --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
-      -- local servers = {
-      --   clangd = {},
-      --   -- gopls = {},
-      --   pylsp = {},
-      --   -- rust_analyzer = {},
-      --   -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
-      --   --
-      --   -- Some languages (like typescript) have entire language plugins that can be useful:
-      --   --    https://github.com/pmizio/typescript-tools.nvim
-      --   --
-      --   -- But for many setups, the LSP (`tsserver`) will work just fine
-      --   -- tsserver = {},
-      --   --
-      --
+      lspconfig.julials.setup { capabilities = capabilities }
     end,
   },
 
