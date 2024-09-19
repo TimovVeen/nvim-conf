@@ -1,37 +1,4 @@
 --[[
-
-=====================================================================
-==================== READ THIS BEFORE CONTINUING ====================
-=====================================================================
-========                                    .-----.          ========
-========         .----------------------.   | === |          ========
-========         |.-""""""""""""""""""-.|   |-----|          ========
-========         ||                    ||   | === |          ========
-========         ||   KICKSTART.NVIM   ||   |-----|          ========
-========         ||                    ||   | === |          ========
-========         ||                    ||   |-----|          ========
-========         ||:Tutor              ||   |:::::|          ========
-========         |'-..................-'|   |____o|          ========
-========         `"")----------------(""`   ___________      ========
-========        /::::::::::|  |::::::::::\  \ no mouse \     ========
-========       /:::========|  |==hjkl==:::\  \ required \    ========
-========      '""""""""""""'  '""""""""""""'  '""""""""""'   ========
-========                                                     ========
-=====================================================================
-=====================================================================
-
-What is Kickstart?
-
-  Kickstart.nvim is *not* a distribution.
-
-  Kickstart.nvim is a starting point for your own configuration.
-    The goal is that you can read every line of code, top-to-bottom, understand
-    what your configuration is doing, and modify it to suit your needs.
-
-    Once you've done that, you can start exploring, configuring and tinkering to
-    make Neovim your own! That might mean leaving Kickstart just the way it is for a while
-    or immediately breaking it into modular pieces. It's up to you!
-
     If you don't know anything about Lua, I recommend taking some time to read through
     a guide. One possible example which will only take 10-15 minutes:
       - https://learnxinyminutes.com/docs/lua/
@@ -70,27 +37,11 @@ Kickstart Guide:
     These are hints about where to find more information about the relevant settings,
     plugins or Neovim features used in Kickstart.
 
-   NOTE: Look for lines like this
-
-    Throughout the file. These are for you, the reader, to help you understand what is happening.
-    Feel free to delete them once you know what you're doing, but they should serve as a guide
-    for when you are first encountering a few different constructs in your Neovim config.
-
-If you experience any errors while trying to install kickstart, run `:checkhealth` for more info.
-
-I hope you enjoy your Neovim journey,
-- TJ
-
-P.S. You can delete this when you're done too. It's your config now! :)
---]]
-
 -- Set <space> as the leader key
 -- See `:help mapleader`
 --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
-vim.g.mapleader = ' '
-vim.g.maplocalleader = ' '
-
--- Set to true if you have a Nerd Font installed and selected in the terminal
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
 vim.g.have_nerd_font = true
 
 -- [[ Setting options ]]
@@ -116,7 +67,7 @@ vim.opt.showmode = false
 vim.opt.clipboard = 'unnamedplus'
 
 -- Enable break indent
-vim.opt.breakindent = true
+vim.opt.breakindent = false
 
 vim.opt.autochdir = true
 
@@ -155,6 +106,12 @@ vim.opt.cursorline = true
 
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
+
+vim.opt.shiftwidth = 4
+vim.opt.tabstop = 4
+-- vim.opt.spelllang = 'en'
+-- vim.opt.spell = true
+
 
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
@@ -230,54 +187,54 @@ require('lazy').setup({
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
 
-  {
-    "mikavilpas/yazi.nvim",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-    },
-    -- lazy = false,
-    event = "VeryLazy",
-    keys = {
-      -- 👇 in this section, choose your own keymappings!
-      {
-        "<leader>e",
-        function()
-          require("yazi").yazi()
-        end,
-        desc = "Open the file manager",
-      },
-      {
-        -- Open in the current working directory
-        "<leader>cw",
-        function()
-          require("yazi").yazi(nil, vim.fn.getcwd())
-        end,
-        desc = "Open the file manager in nvim's working directory",
-      },
-      {
-        '<c-up>',
-        function()
-          -- NOTE: requires a version of yazi that includes
-          -- https://github.com/sxyazi/yazi/pull/1305 from 2024-07-18
-          require('yazi').toggle()
-        end,
-        desc = "Resume the last yazi session",
-      },
-    },
-    opts = {
-      -- if you want to open yazi instead of netrw, see below for more info
-      open_for_directories = true,
-
-      -- enable these if you are using the latest version of yazi
-      -- use_ya_for_events_reading = true,
-      -- use_yazi_client_id_flag = true,
-
-      -- keymaps = {
-      --   show_help = '<f1>',
-      -- },
-    },
-  },
-
+  -- {
+  --   "mikavilpas/yazi.nvim",
+  --   dependencies = {
+  --     "nvim-lua/plenary.nvim",
+  --   },
+  --   -- lazy = false,
+  --   event = "VeryLazy",
+  --   keys = {
+  --     -- 👇 in this section, choose your own keymappings!
+  --     {
+  --       "<leader>e",
+  --       function()
+  --         require("yazi").yazi()
+  --       end,
+  --       desc = "Open the file manager",
+  --     },
+  --     {
+  --       -- Open in the current working directory
+  --       "<leader>cw",
+  --       function()
+  --         require("yazi").yazi(nil, vim.fn.getcwd())
+  --       end,
+  --       desc = "Open the file manager in nvim's working directory",
+  --     },
+  --     {
+  --       '<c-up>',
+  --       function()
+  --         -- NOTE: requires a version of yazi that includes
+  --         -- https://github.com/sxyazi/yazi/pull/1305 from 2024-07-18
+  --         require('yazi').toggle()
+  --       end,
+  --       desc = "Resume the last yazi session",
+  --     },
+  --   },
+  --   opts = {
+  --     -- if you want to open yazi instead of netrw, see below for more info
+  --     open_for_directories = true,
+  --
+  --     -- enable these if you are using the latest version of yazi
+  --     -- use_ya_for_events_reading = true,
+  --     -- use_yazi_client_id_flag = true,
+  --
+  --     -- keymaps = {
+  --     --   show_help = '<f1>',
+  --     -- },
+  --   },
+  -- },
+  --
 
   -- NOTE: Plugins can also be added by using a table,
   -- with the first argument being the link and the following
@@ -287,6 +244,66 @@ require('lazy').setup({
   --
   --  This is equivalent to:
   --    require('Comment').setup({})
+
+  -- {
+  --   '3rd/image.nvim',
+  --   rocks = {
+  --     "magick",
+  --   },
+  --   config = function()
+  --     require("image").setup({
+  --       backend = "kitty",
+  --       integrations = {
+  --         markdown = {
+  --           enabled = true,
+  --           clear_in_insert_mode = false,
+  --           download_remote_images = true,
+  --           only_render_image_at_cursor = false,
+  --           filetypes = { "markdown", "vimwiki" }, -- markdown extensions (ie. quarto) can go here
+  --         },
+  --         neorg = {
+  --           enabled = true,
+  --           clear_in_insert_mode = false,
+  --           download_remote_images = true,
+  --           only_render_image_at_cursor = false,
+  --           filetypes = { "norg" },
+  --         },
+  --         html = {
+  --           enabled = false,
+  --         },
+  --         css = {
+  --           enabled = false,
+  --         },
+  --       },
+  --       max_width = nil,
+  --       max_height = nil,
+  --       max_width_window_percentage = nil,
+  --       max_height_window_percentage = 50,
+  --       window_overlap_clear_enabled = false,                                               -- toggles images when windows are overlapped
+  --       window_overlap_clear_ft_ignore = { "cmp_menu", "cmp_docs", "" },
+  --       editor_only_render_when_focused = false,                                            -- auto show/hide images when the editor gains/looses focus
+  --       tmux_show_only_in_active_window = false,                                            -- auto show/hide images in the correct Tmux window (needs visual-activity off)
+  --       hijack_file_patterns = { "*.png", "*.jpg", "*.jpeg", "*.gif", "*.webp", "*.avif" }, -- render image files as images when opened
+  --     })
+  --   end,
+  -- },
+  {
+    'martineausimon/nvim-lilypond-suite',
+    config = function()
+      require('nvls').setup({
+        lilypond = {
+          options = {
+            pdf_viewer = "zathura",
+          },
+        },
+        latex = {
+          options = {
+            pdf_viewer = "zathura",
+          },
+        },
+      })
+    end
+  },
 
   {
     'nvim-neorg/neorg',
@@ -301,11 +318,23 @@ require('lazy').setup({
             config = {
               workspaces = {
                 notes = '~/notes',
+                personal = "~/personal",
               },
               index = 'index.norg',
               default_workspace = 'notes',
             },
           },
+          ['core.journal'] = {
+            config = {
+              workspace = 'personal',
+            },
+          },
+          ['core.export'] = {},
+          -- ['core.latex.renderer'] = {
+          --   config = {
+          --     debounce_ms = 300,
+          --   },
+          -- },
         },
       }
     end,
@@ -629,7 +658,28 @@ require('lazy').setup({
       local lspconfig = require 'lspconfig'
 
       lspconfig.clangd.setup {}
-      lspconfig.pylsp.setup {}
+      lspconfig.pylsp.setup {
+        settings = {
+          pylsp = {
+            plugins = {
+              black = { enabled = true },
+              autopep8 = { enabled = false },
+              yapf = { enabled = false },
+              -- linter options
+              pylint = { args = { '--ignore=C0114,C0115,C0116', '-' }, enabled = true, executable = "pylint" },
+              pyflakes = { enabled = false },
+              pycodestyle = { enabled = false },
+              mccabe = { enabled = false },
+              -- type checker
+              pylsp_mypy = { enabled = false },
+              -- auto-completion options
+              jedi_completion = { fuzzy = true },
+              -- import sorting
+              pyls_isort = { enabled = true },
+            },
+          },
+        },
+      }
 
       lspconfig.lua_ls.setup {
         -- cmd = {...},
@@ -645,6 +695,8 @@ require('lazy').setup({
           },
         },
       }
+
+      lspconfig.julials.setup {}
       -- Enable the following language servers
       --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
       --
@@ -825,26 +877,26 @@ require('lazy').setup({
     end,
   },
 
-  { -- You can easily change to a different colorscheme.
-    -- Change the name of the colorscheme plugin below, and then
-    -- change the command in the config to whatever the name of that colorscheme is.
-    --
-    -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
-    'zenbones-theme/zenbones.nvim',
-    dependencies = {
-      'rktjmp/lush.nvim',
-    },
-    priority = 1000, -- Make sure to load this before all the other start plugins.
-    init = function()
-      -- Load the colorscheme here.
-      -- Like many other themes, this one has different styles, and you could load
-      -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-      vim.cmd.colorscheme 'duckbones'
-
-      -- You can configure highlights by doing something like:
-      vim.cmd.hi 'Comment gui=none'
-    end,
-  },
+  -- { -- You can easily change to a different colorscheme.
+  --   -- Change the name of the colorscheme plugin below, and then
+  --   -- change the command in the config to whatever the name of that colorscheme is.
+  --   --
+  --   -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
+  --   'zenbones-theme/zenbones.nvim',
+  --   dependencies = {
+  --     'rktjmp/lush.nvim',
+  --   },
+  --   priority = 1000, -- Make sure to load this before all the other start plugins.
+  --   init = function()
+  --     -- Load the colorscheme here.
+  --     -- Like many other themes, this one has different styles, and you could load
+  --     -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
+  --     vim.cmd.colorscheme 'duckbones'
+  --
+  --     -- You can configure highlights by doing something like:
+  --     vim.cmd.hi 'Comment gui=none'
+  --   end,
+  -- },
 
   -- Highlight todo, notes, etc in comments
   { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
@@ -888,17 +940,12 @@ require('lazy').setup({
   },
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
-    build = ':TSUpdate',
     opts = {
-      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' },
-      highlight = {
-        enable = true,
-        -- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.
-        --  If you are experiencing weird indenting issues, add the language to
-        --  the list of additional_vim_regex_highlighting and disabled languages for indent.
-        additional_vim_regex_highlighting = { 'ruby' },
-      },
-      indent = { enable = true, disable = { 'ruby' } },
+      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc', 'julia', 'python' },
+      highlight = { enable = true },
+      indent = { enable = true },
+      incremental_selection = { enable = true },
+      textobjects = { enable = true },
     },
     config = function(_, opts)
       -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
@@ -917,18 +964,10 @@ require('lazy').setup({
     end,
   },
 
-  -- The following two comments only work if you have downloaded the kickstart repo, not just copy pasted the
-  -- init.lua. If you want these files, they are in the repository, so you can just download them and
-  -- place them in the correct locations.
-
   -- NOTE: Next step on your Neovim journey: Add/Configure additional plugins for Kickstart
   --
-  --  Here are some example plugins that I've included in the Kickstart repository.
-  --  Uncomment any of the lines below to enable them (you will need to restart nvim).
-  --
   -- require 'kickstart.plugins.debug',
-  require 'kickstart.plugins.indent_line',
-  -- require 'kickstart.plugins.lint',
+  -- require 'kickstart.plugins.indent_line', -- require 'kickstart.plugins.lint',
   require 'kickstart.plugins.autopairs',
   require 'kickstart.plugins.neo-tree',
   require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
