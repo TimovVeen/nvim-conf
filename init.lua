@@ -1,10 +1,5 @@
 --[[
-    If you don't know anything about Lua, I recommend taking some time to read through
-    a guide. One possible example which will only take 10-15 minutes:
       - https://learnxinyminutes.com/docs/lua/
-
-    After understanding a bit more about Lua, you can use `:help lua-guide` as a
-    reference for how Neovim integrates Lua.
     - :help lua-guide
     - (or HTML version): https://neovim.io/doc/user/lua-guide.html
 
@@ -12,7 +7,7 @@
 -- See `:help mapleader`
 --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
 vim.g.mapleader = " "
-vim.g.maplocalleader = " "
+vim.g.maplocalleader = ","
 vim.g.have_nerd_font = true
 
 -- [[ Setting options ]]
@@ -20,11 +15,8 @@ vim.g.have_nerd_font = true
 -- NOTE: You can change these options as you wish!
 --  For more options, you can see `:help option-list`
 
--- Make line numbers default
 vim.opt.number = true
--- You can also add relative line numbers, to help with jumping.
---  Experiment for yourself to see if you like it!
--- vim.opt.relativenumber = true
+vim.opt.relativenumber = true
 
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.opt.mouse = 'a'
@@ -32,20 +24,16 @@ vim.opt.mouse = 'a'
 -- Don't show the mode, since it's already in the status line
 vim.opt.showmode = false
 
--- Sync clipboard between OS and Neovim.
---  Remove this option if you want your OS clipboard to remain independent.
---  See `:help 'clipboard'`
 vim.opt.clipboard = 'unnamedplus'
 
 -- Enable break indent
 vim.opt.breakindent = false
 
-vim.opt.autochdir = true
+vim.opt.autochdir = false
 
 -- Save undo history
 vim.opt.undofile = true
 
--- Case-insensitive searching UNLESS \C or one or more capital letters in the search term
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 
@@ -83,7 +71,6 @@ vim.opt.tabstop = 4
 -- vim.opt.spelllang = 'en'
 -- vim.opt.spell = true
 
-
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
@@ -117,6 +104,16 @@ vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right win
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
+-- vim.keymap.set('n', 'm', ':terminal<CR>ijulia --project=./<CR>', { silent = true })
+
+function OpenREPL()
+  vim.cmd 'vnew'
+  vim.fn.termopen 'julia --project=./'
+  vim.cmd 'startinsert'
+end
+
+vim.keymap.set('n', 'mn', OpenREPL, { silent = true })
+
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
@@ -129,6 +126,11 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   callback = function()
     vim.highlight.on_yank()
   end,
+})
+
+vim.api.nvim_create_autocmd('BufEnter', {
+  command = 'syntax sync fromstart',
+  pattern = { '*.ly', '*.ily', '*.tex' },
 })
 
 -- [[ Install `lazy.nvim` plugin manager ]]
@@ -144,7 +146,7 @@ end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
 -- [[ Configure and install plugins ]]
-require('lazy').setup({
+require('lazy').setup {
   -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
 
@@ -156,62 +158,19 @@ require('lazy').setup({
   --
   --  This is equivalent to:
   --    require('Comment').setup({})
-
-  {
-    'martineausimon/nvim-lilypond-suite',
-    config = function()
-      require('nvls').setup({
-        lilypond = {
-          options = {
-            pdf_viewer = "zathura",
-          },
-        },
-        latex = {
-          options = {
-            pdf_viewer = "zathura",
-          },
-        },
-      })
-    end
-  },
-
-  {
-    'nvim-neorg/neorg',
-    lazy = false,
-    version = '*',
-    config = function()
-      require('neorg').setup {
-        load = {
-          ['core.defaults'] = {},
-          ['core.concealer'] = {},
-          ['core.dirman'] = {
-            config = {
-              workspaces = {
-                notes = '~/notes',
-                personal = "~/personal",
-              },
-              index = 'index.norg',
-              default_workspace = 'notes',
-            },
-          },
-          ['core.journal'] = {
-            config = {
-              workspace = 'personal',
-            },
-          },
-          ['core.export'] = {},
-          -- ['core.latex.renderer'] = {
-          --   config = {
-          --     debounce_ms = 300,
-          --   },
-          -- },
-        },
-      }
-    end,
-  },
+  --
+  -- {
+  --   'lervag/vimtex',
+  --   lazy = false, -- we don't want to lazy load VimTeX
+  --   -- tag = "v2.15", -- uncomment to pin to a specific release
+  --   init = function()
+  --     -- VimTeX configuration goes here, e.g.
+  --     vim.g.vimtex_view_method = 'zathura'
+  --   end,
+  -- },
 
   -- "gc" to comment visual regions/lines
-  { 'numToStr/Comment.nvim',    opts = {} },
+  { 'numToStr/Comment.nvim', opts = {} },
 
   -- Here is a more advanced example where we pass configuration
   -- options to `gitsigns.nvim`. This is equivalent to the following Lua:
@@ -246,7 +205,7 @@ require('lazy').setup({
   -- after the plugin has been loaded:
   --  config = function() ... end
 
-  {                     -- Useful plugin to show you pending keybinds.
+  { -- Useful plugin to show you pending keybinds.
     'folke/which-key.nvim',
     event = 'VimEnter', -- Sets the loading event to 'VimEnter'
     config = function() -- This is the function that runs, AFTER loading
@@ -294,7 +253,7 @@ require('lazy').setup({
       { 'nvim-telescope/telescope-ui-select.nvim' },
 
       -- Useful for getting pretty icons, but requires a Nerd Font.
-      { 'nvim-tree/nvim-web-devicons',            enabled = vim.g.have_nerd_font },
+      { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
     },
     config = function()
       -- Telescope is a fuzzy finder that comes with a lot of different things that
@@ -382,7 +341,7 @@ require('lazy').setup({
     dependencies = {
       -- Useful status updates for LSP.
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-      { 'j-hui/fidget.nvim',    opts = {} },
+      { 'j-hui/fidget.nvim', opts = {} },
 
       -- `lazydev` configures Lua LSP for your Neovim config, runtime and plugins
       -- used for completion, annotations and signatures of Neovim apis
@@ -503,7 +462,7 @@ require('lazy').setup({
               autopep8 = { enabled = false },
               yapf = { enabled = false },
               -- linter options
-              pylint = { args = { '--ignore=C0114,C0115,C0116', '-' }, enabled = true, executable = "pylint" },
+              pylint = { args = { '--ignore=C0114,C0115,C0116', '-' }, enabled = true, executable = 'pylint' },
               pyflakes = { enabled = false },
               pycodestyle = { enabled = false },
               mccabe = { enabled = false },
@@ -532,6 +491,47 @@ require('lazy').setup({
       }
 
       lspconfig.julials.setup { capabilities = capabilities }
+
+      lspconfig.texlab.setup {
+        capabilities = capabilities,
+        single_file_support = true,
+        root_dir = function()
+          return vim.fn.getcwd()
+        end,
+        settings = {
+          texlab = {
+            build = {
+              executable = 'tectonic',
+              args = { '-X', 'compile', '%f', '--untrusted', '--synctex', '--keep-logs', '--keep-intermediates' },
+              onSave = true,
+            },
+            latexindent = {
+              modifyLineBreaks = true,
+            },
+            chktex = {
+              onOpenAndSave = true,
+            },
+            -- forwardSearch = {
+            --   executable = 'zathura',
+            --   args = '%f',
+            -- },
+          },
+        },
+      }
+
+      lspconfig.tinymist.setup {
+        capabilities = capabilities,
+        single_file_support = true,
+        root_dir = function()
+          return vim.fn.getcwd()
+        end,
+        settings = {
+          tinymist = {
+            exportPdf = 'onSave',
+            outputPath = '$root/out/$name',
+          },
+        },
+      }
     end,
   },
 
@@ -581,12 +581,6 @@ require('lazy').setup({
       {
         'L3MON4D3/LuaSnip',
         build = (function()
-          -- Build Step is needed for regex support in snippets.
-          -- This step is not supported in many windows environments.
-          -- Remove the below condition to re-enable on windows.
-          if vim.fn.has 'win32' == 1 or vim.fn.executable 'make' == 0 then
-            return
-          end
           return 'make install_jsregexp'
         end)(),
         dependencies = {
@@ -753,7 +747,22 @@ require('lazy').setup({
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
     opts = {
-      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc', 'julia', 'python' },
+      ensure_installed = {
+        'bash',
+        'c',
+        'diff',
+        'html',
+        'lua',
+        'luadoc',
+        'markdown',
+        'markdown_inline',
+        'query',
+        'vim',
+        'vimdoc',
+        'julia',
+        'python',
+        'typst',
+      },
       highlight = { enable = true },
       indent = { enable = true },
       incremental_selection = { enable = true },
@@ -776,41 +785,8 @@ require('lazy').setup({
     end,
   },
 
-  -- NOTE: Next step on your Neovim journey: Add/Configure additional plugins for Kickstart
-  --
-  -- require 'kickstart.plugins.debug',
-  -- require 'kickstart.plugins.indent_line', -- require 'kickstart.plugins.lint',
-  require 'kickstart.plugins.autopairs',
-  require 'kickstart.plugins.neo-tree',
-  require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
-
-  -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
-  --    This is the easiest way to modularize your config.
-  --
-  --  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
-  --    For additional information, see `:help lazy.nvim-lazy.nvim-structuring-your-plugins`
-  -- { import = 'custom.plugins' },
-}, {
-  ui = {
-    -- If you are using a Nerd Font: set icons to an empty table which will use the
-    -- default lazy.nvim defined Nerd Font icons, otherwise define a unicode icons table
-    icons = vim.g.have_nerd_font and {} or {
-      cmd = '⌘',
-      config = '🛠',
-      event = '📅',
-      ft = '📂',
-      init = '⚙',
-      keys = '🗝',
-      plugin = '🔌',
-      runtime = '💻',
-      require = '🌙',
-      source = '📄',
-      start = '🚀',
-      task = '📌',
-      lazy = '💤 ',
-    },
-  },
-})
+  { import = 'plugins' },
+}
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
