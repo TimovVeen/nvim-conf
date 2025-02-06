@@ -1,14 +1,17 @@
---[[
-      - https://learnxinyminutes.com/docs/lua/
-    - :help lua-guide
-    - (or HTML version): https://neovim.io/doc/user/lua-guide.html
+-- https://learnxinyminutes.com/docs/lua/
+-- :help lua-guide
+-- (or HTML version): https://neovim.io/doc/user/lua-guide.html
 
 -- Set <space> as the leader key
 -- See `:help mapleader`
 --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
-vim.g.mapleader = " "
-vim.g.maplocalleader = ","
+
+vim.g.mapleader = ' '
+vim.g.maplocalleader = ','
 vim.g.have_nerd_font = true
+
+vim.g.loaded_node_provider = 0
+vim.g.loaded_perl_provider = 0
 
 -- [[ Setting options ]]
 -- See `:help vim.opt`
@@ -528,7 +531,9 @@ require('lazy').setup {
         settings = {
           tinymist = {
             exportPdf = 'onSave',
-            outputPath = '$root/out/$name',
+            -- outputPath = '$root/out/$name',
+            formatterMode = 'typstyle',
+            semanticTokens = 'disable',
           },
         },
       }
