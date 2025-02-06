@@ -1,13 +1,6 @@
 return {
   'lewis6991/gitsigns.nvim',
   opts = {
-    signs = {
-      add = { text = '+' },
-      change = { text = '~' },
-      delete = { text = '_' },
-      topdelete = { text = '‾' },
-      changedelete = { text = '~' },
-    },
     on_attach = function(bufnr)
       local gitsigns = require 'gitsigns'
       local function map(mode, l, r, opts)
@@ -44,7 +37,7 @@ return {
       map('n', '<leader>hS', gitsigns.stage_buffer, { desc = 'git [S]tage buffer' })
       map('n', '<leader>hR', gitsigns.reset_buffer, { desc = 'git [R]eset buffer' })
       map('n', '<leader>hp', gitsigns.preview_hunk, { desc = 'git [p]review hunk' })
-      map('n', '<leader>hP', gitsigns.preview_hunk_inline, { desc = 'git [P]review hunk inline' })
+      map('n', '<leader>hi', gitsigns.preview_hunk_inline, { desc = 'git [P]review hunk inline' })
       map('n', '<leader>hb', gitsigns.blame_line, { desc = 'git [b]lame line' })
       map('n', '<leader>hd', gitsigns.diffthis, { desc = 'git [d]iff against index' })
       map('n', '<leader>hD', function()
