@@ -18,7 +18,8 @@ vim.g.loaded_ruby_provider = 0
 -- See `:help vim.opt`
 -- NOTE: You can change these options as you wish!
 --  For more options, you can see `:help option-list`
-vim.lsp.set_log_level 'debug'
+
+vim.opt.cmdheight = 0
 
 vim.opt.number = true
 vim.opt.relativenumber = true
@@ -152,29 +153,8 @@ vim.opt.rtp:prepend(lazypath)
 
 -- [[ Configure and install plugins ]]
 require('lazy').setup {
-  -- NOTE: Plugins can be added with a link (or for a github repo: 'owner/repo' link).
-  'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically
-
   -- "gc" to comment visual regions/lines
   { 'numToStr/Comment.nvim',    opts = {} },
-
-  -- Here is a more advanced example where we pass configuration
-  -- options to `gitsigns.nvim`. This is equivalent to the following Lua:
-  --    require('gitsigns').setup({ ... })
-  --
-  -- See `:help gitsigns` to understand what the configuration keys do
-  { -- Adds git related signs to the gutter, as well as utilities for managing changes
-    'lewis6991/gitsigns.nvim',
-    opts = {
-      signs = {
-        add = { text = '+' },
-        change = { text = '~' },
-        delete = { text = '_' },
-        topdelete = { text = '‾' },
-        changedelete = { text = '~' },
-      },
-    },
-  },
 
   -- NOTE: Plugins can also be configured to run Lua code when they are loaded.
   --
