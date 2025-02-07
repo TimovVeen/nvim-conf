@@ -72,9 +72,9 @@ vim.opt.cursorline = true
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
 
-vim.opt.shiftwidth = 4
-vim.opt.tabstop = 4
--- vim.opt.softtabstop = 4
+vim.opt.shiftwidth = 2
+vim.opt.tabstop = 2
+vim.opt.softtabstop = 2
 vim.opt.expandtab = true
 vim.opt.smartindent = true
 
@@ -113,6 +113,30 @@ vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left wind
 vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+
+local keyopts = { noremap = true, silent = true }
+
+-- Move to previous/next
+vim.keymap.set('n', '<A-,>', '<Cmd>BufferPrevious<CR>', keyopts)
+vim.keymap.set('n', '<A-.>', '<Cmd>BufferNext<CR>', keyopts)
+
+-- Re-order to previous/next
+vim.keymap.set('n', '<A-<>', '<Cmd>BufferMovePrevious<CR>', keyopts)
+vim.keymap.set('n', '<A->>', '<Cmd>BufferMoveNext<CR>', keyopts)
+
+-- Goto buffer in position...
+vim.keymap.set('n', '<A-1>', '<Cmd>BufferGoto 1<CR>', keyopts)
+vim.keymap.set('n', '<A-2>', '<Cmd>BufferGoto 2<CR>', keyopts)
+vim.keymap.set('n', '<A-3>', '<Cmd>BufferGoto 3<CR>', keyopts)
+vim.keymap.set('n', '<A-4>', '<Cmd>BufferGoto 4<CR>', keyopts)
+vim.keymap.set('n', '<A-5>', '<Cmd>BufferGoto 5<CR>', keyopts)
+vim.keymap.set('n', '<A-6>', '<Cmd>BufferGoto 6<CR>', keyopts)
+vim.keymap.set('n', '<A-7>', '<Cmd>BufferGoto 7<CR>', keyopts)
+vim.keymap.set('n', '<A-8>', '<Cmd>BufferGoto 8<CR>', keyopts)
+vim.keymap.set('n', '<A-9>', '<Cmd>BufferGoto 9<CR>', keyopts)
+vim.keymap.set('n', '<A-0>', '<Cmd>BufferLast<CR>', keyopts)
+
+vim.keymap.set('n', '<A-c>', '<Cmd>BufferClose<CR>', keyopts)
 
 -- vim.keymap.set('n', 'm', ':terminal<CR>ijulia --project=./<CR>', { silent = true })
 
@@ -158,7 +182,8 @@ vim.opt.rtp:prepend(lazypath)
 -- [[ Configure and install plugins ]]
 require('lazy').setup {
   -- "gc" to comment visual regions/lines
-  { 'numToStr/Comment.nvim',    opts = {} },
+  { 'numToStr/Comment.nvim',                   opts = {} },
+  { 'nvim-treesitter/nvim-treesitter-context', opts = {} },
 
   -- NOTE: Plugins can also be configured to run Lua code when they are loaded.
   --
@@ -252,6 +277,7 @@ require('lazy').setup {
         'julia',
         'python',
         'typst',
+        'norg',
       },
       highlight = { enable = true },
       indent = { enable = true },
