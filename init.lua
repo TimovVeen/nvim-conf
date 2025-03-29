@@ -19,7 +19,7 @@ vim.g.loaded_ruby_provider = 0
 -- NOTE: You can change these options as you wish!
 --  For more options, you can see `:help option-list`
 
-vim.opt.cmdheight = 0
+-- vim.opt.cmdheight = 0
 
 vim.opt.number = true
 vim.opt.relativenumber = true
@@ -151,6 +151,14 @@ vim.keymap.set('n', 'mn', OpenREPL, { silent = true })
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
+vim.api.nvim_create_user_command("OpenPdf", function()
+  local filepath = vim.api.nvim_buf_get_name(0)
+  if filepath:match("%.typ$") then
+    os.execute("zathura --fork " ..
+      vim.fn.shellescape(filepath:gsub("%.typ$", ".pdf"):gsub("(.*/)", "%1out/")) .. " > /dev/null 2>&1 &")
+  end
+end, {})
+
 -- Highlight when yanking (copying) text
 --  Try it with `yap` in normal mode
 --  See `:help vim.highlight.on_yank()`
@@ -278,6 +286,8 @@ require('lazy').setup {
         'python',
         'typst',
         'norg',
+        'rust',
+        'wgsl',
       },
       highlight = { enable = true },
       indent = { enable = true },

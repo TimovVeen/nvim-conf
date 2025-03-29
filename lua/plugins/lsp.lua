@@ -171,6 +171,44 @@ return { -- LSP Configuration & Plugins
 
     lspconfig.julials.setup { capabilities = capabilities }
 
+    lspconfig.gopls.setup { capabilities = capabilities }
+
+    lspconfig.rust_analyzer.setup { capabilities = capabilities }
+
+    lspconfig.wgsl_analyzer.setup {
+      capabilities = capabilities,
+      cmd = { 'wgsl-analyzer' },
+      settings = {
+        ["wgsl-analyzer"] = {},
+      },
+      handlers = {
+        ["wgsl-analyzer/requestConfiguration"] = function()
+          return {
+            success = true,
+            customImports = { _dummy_ = "dummy" },
+            shaderDefs = {},
+            trace = {
+              extension = false,
+              server = false,
+            },
+            inlayHints = {
+              enabled = false,
+              typeHints = false,
+              parameterHints = false,
+              structLayoutHints = false,
+              typeVerbosity = "inner",
+            },
+            diagnostics = {
+              typeErrors = true,
+              nagaParsingErrors = true,
+              nagaValidationErrors = true,
+              nagaVersion = "main",
+            },
+          }
+        end,
+      },
+    }
+
     lspconfig.texlab.setup {
       capabilities = capabilities,
       settings = {

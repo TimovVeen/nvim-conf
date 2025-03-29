@@ -18,11 +18,11 @@ return {
     workspaces = {
       {
         name = 'personal',
-        path = '~/vaults/personal',
+        path = '~/Documents/vaults/personal',
       },
       {
         name = 'comprendium',
-        path = '~/vaults/comprendium',
+        path = '~/Documents/vaults/comprendium',
       },
     },
   },
