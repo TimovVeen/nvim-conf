@@ -138,16 +138,6 @@ vim.keymap.set('n', '<A-0>', '<Cmd>BufferLast<CR>', keyopts)
 
 vim.keymap.set('n', '<A-c>', '<Cmd>BufferClose<CR>', keyopts)
 
--- vim.keymap.set('n', 'm', ':terminal<CR>ijulia --project=./<CR>', { silent = true })
-
-function OpenREPL()
-  vim.cmd 'vnew'
-  vim.fn.termopen 'julia --project=./'
-  vim.cmd 'startinsert'
-end
-
-vim.keymap.set('n', 'mn', OpenREPL, { silent = true })
-
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
 
@@ -175,8 +165,7 @@ vim.api.nvim_create_autocmd('BufEnter', {
   pattern = { '*.ly', '*.ily', '*.tex' },
 })
 
--- [[ Install `lazy.nvim` plugin manager ]]
---    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
+
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
 if not vim.uv.fs_stat(lazypath) then
   local lazyrepo = 'https://github.com/folke/lazy.nvim.git'
@@ -313,6 +302,25 @@ require('lazy').setup {
 
   { import = 'plugins' },
 }
+
+-- SETUP LSP
+vim.lsp.config('*', {
+  capabilities = require('blink.cmp').get_lsp_capabilities(),
+  root_markers = { '.git' },
+})
+
+vim.api.nvim_create_autocmd('LspAttach', {
+  group = vim.api.nvim_create_augroup('UserLspAttach', { clear = true }),
+  callback = function(ev)
+    vim.lsp.completion.enable(true, ev.data.client_id, ev.buf)
+  end,
+})
+
+vim.lsp.enable({ 'gopls', 'lua_ls', 'clangd', 'rust_analyzer', 'wgsl_analyzer', 'texlab', 'tinymist' })
+
+vim.diagnostic.config({
+  virtual_text = { current_line = true }
+})
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
