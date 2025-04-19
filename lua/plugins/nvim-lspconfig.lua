@@ -5,7 +5,6 @@ return {
     'saghen/blink.cmp',
   },
   config = function()
-
     vim.api.nvim_create_autocmd('LspAttach', {
       group = vim.api.nvim_create_augroup('UserLspAttach', { clear = true }),
       callback = function(args)
@@ -17,7 +16,7 @@ return {
         if not client:supports_method('textDocument/willSaveWaitUntil')
             and client:supports_method('textDocument/formatting') then
           vim.api.nvim_create_autocmd('BufWritePre', {
-            group = vim.api.nvim_create_augroup('UserLspAttach', {clear=false}),
+            group = vim.api.nvim_create_augroup('UserLspAttach', { clear = false }),
             buffer = args.buf,
             callback = function()
               vim.lsp.buf.format({ bufnr = args.buf, id = client.id, timeout_ms = 1000 })
@@ -26,14 +25,14 @@ return {
         end
 
         local map = function(keys, func, desc, mode)
-            mode = mode or 'n'
-            vim.keymap.set(mode, keys, func, { buffer = args.buf, desc = 'LSP: ' .. desc })
+          mode = mode or 'n'
+          vim.keymap.set(mode, keys, func, { buffer = args.buf, desc = 'LSP: ' .. desc })
         end
 
         if client:supports_method('textDocument/inlayHint') then
           map('<leader>th', function()
-              vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = args.buf })
-            end, '[T]oggle Inlay [H]ints')
+            vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = args.buf })
+          end, '[T]oggle Inlay [H]ints')
         end
 
         map('grn', vim.lsp.buf.rename, '[R]e[n]ame')
@@ -48,5 +47,6 @@ return {
       end,
     })
 
+    vim.lsp.enable({ 'gopls', 'lua_ls', 'clangd', 'rust_analyzer', 'wgsl_analyzer', 'texlab', 'tinymist' })
   end,
 }
