@@ -1,8 +1,5 @@
 ---@type vim.lsp.Config
 return {
-  cmd = { "texlab" },
-  root_markers = { "main.tex" },
-  filetypes = { "tex", "plaintex", "bib" },
   settings = {
     texlab = {
       build = {

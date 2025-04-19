@@ -138,9 +138,6 @@ vim.keymap.set('n', '<A-0>', '<Cmd>BufferLast<CR>', keyopts)
 
 vim.keymap.set('n', '<A-c>', '<Cmd>BufferClose<CR>', keyopts)
 
--- [[ Basic Autocommands ]]
---  See `:help lua-guide-autocommands`
-
 vim.api.nvim_create_user_command("OpenPdf", function()
   local filepath = vim.api.nvim_buf_get_name(0)
   if filepath:match("%.typ$") then
@@ -182,38 +179,26 @@ require('lazy').setup {
   { 'numToStr/Comment.nvim',                   opts = {} },
   { 'nvim-treesitter/nvim-treesitter-context', opts = {} },
 
-  -- NOTE: Plugins can also be configured to run Lua code when they are loaded.
-  --
-  -- This is often very useful to both group configuration, as well as handle
-  -- lazy loading plugins that don't need to be loaded immediately at startup.
-  --
-  -- For example, in the following configuration, we use:
-  --  event = 'VimEnter'
-  --
-  -- which loads which-key before all the UI elements are loaded. Events can be
-  -- normal autocommands events (`:help autocmd-events`).
-  --
-  -- Then, because we use the `config` key, the configuration only runs
-  -- after the plugin has been loaded:
-  --  config = function() ... end
-
   {                     -- Useful plugin to show you pending keybinds.
     'folke/which-key.nvim',
     event = 'VimEnter', -- Sets the loading event to 'VimEnter'
-    config = function() -- This is the function that runs, AFTER loading
-      require('which-key').setup()
+    opts = {
+      -- delay between pressing a key and opening which-key (milliseconds)
+      -- this setting is independent of vim.opt.timeoutlen
+      delay = 100,
+      icons = {
+        -- set icon mappings to true if you have a Nerd Font
+        mappings = vim.g.have_nerd_font,
+        keys = {},
+      },
 
       -- Document existing key chains
-      require('which-key').add {
-        { '<leader>c', group = '[C]ode' },
-        { '<leader>d', group = '[D]ocument' },
-        { '<leader>r', group = '[R]ename' },
-        { '<leader>s', group = '[S]earch' },
-        { '<leader>w', group = '[W]orkspace' },
-        { '<leader>t', group = '[T]oggle' },
-        { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
-      }
-    end,
+      spec = {
+        { 'f',         group = '[F]ind' },
+        { '<leader>f', group = '[F]iles' },
+        { '<leader>g', group = '[G]it',  mode = { 'n', 'v' } },
+      },
+    },
   },
 
   -- Highlight todo, notes, etc in comments
@@ -301,40 +286,24 @@ require('lazy').setup {
   },
 
   { import = 'plugins' },
+
+  ui = {
+    icons = {}
+  }
 }
 
 -- SETUP LSP
-vim.lsp.config('*', {
-  capabilities = require('blink.cmp').get_lsp_capabilities(),
-  root_markers = { '.git' },
-})
-
-vim.api.nvim_create_autocmd('LspAttach', {
-  group = vim.api.nvim_create_augroup('UserLspAttach', { clear = true }),
-  callback = function(args)
-    local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
-    if client:supports_method('textDocument/completion') then
-      vim.lsp.completion.enable(true, client.id, args.buf)
-    end
-
-    if not client:supports_method('textDocument/willSaveWaitUntil')
-        and client:supports_method('textDocument/formatting') then
-      vim.api.nvim_create_autocmd('BufWritePre', {
-        group = vim.api.nvim_create_augroup('UserLspAttach', {clear=false}),
-        buffer = args.buf,
-        callback = function()
-          vim.lsp.buf.format({ bufnr = args.buf, id = client.id, timeout_ms = 1000 })
-        end,
-      })
-    end
-  end,
-})
+-- vim.lsp.config('*', {
+--   capabilities = require('blink.cmp').get_lsp_capabilities(),
+--   root_markers = { '.git' },
+-- })
 
 vim.lsp.enable({ 'gopls', 'lua_ls', 'clangd', 'rust_analyzer', 'wgsl_analyzer', 'texlab', 'tinymist' })
 
 vim.diagnostic.config({
   virtual_text = { current_line = true }
 })
+
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
